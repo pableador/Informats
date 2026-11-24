@@ -1,0 +1,285 @@
+/* NoticiaPage.module.css */
+
+.page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  background-color: var(--color-bg-app);
+  color: var(--color-text-dark);
+}
+
+.scrollContent {
+  flex: 1;
+  padding: 20px 16px 32px;
+  max-width: 680px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ── Categorías ── */
+.categorias {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.categoriaPill {
+  display: inline-block;
+  background-color: var(--color-tag-inactive-bg);
+  border: 1px solid var(--color-tag-inactive-border);
+  color: var(--color-text-muted);
+  font-family: var(--font-body);
+  font-size: calc(14px * var(--scale-font));
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  line-height: 1.4;
+}
+
+/* ── Titular ── */
+.titulo {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: calc(34px * var(--scale-font));
+  line-height: 1.2;
+  color: var(--color-text-dark);
+  margin: 0;
+}
+
+/* ── Subtítulo / Resumen ── */
+.subtitulo {
+  font-family: var(--font-body);
+  font-size: calc(22px * var(--scale-font));
+  line-height: 1.45;
+  color: var(--color-text-dark);
+  margin: 0;
+}
+
+/* ── Imagen ── */
+.imagenWrapper {
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.imagen {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  display: block;
+  border-radius: 8px;
+}
+
+/* ── Like ── */
+.likeWrapper {
+  display: flex;
+  align-items: center;
+}
+
+/* ── Bloque info (organismo + evidencia) ── */
+.infoBloque {
+  background-color: var(--color-bubble-green);
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.infoFuente {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-primary-green);
+}
+
+.infoIcon {
+  flex-shrink: 0;
+  color: var(--color-primary-green);
+}
+
+.infoOrganismo {
+  font-family: var(--font-body);
+  font-size: calc(19px * var(--scale-font));
+  font-weight: 600;
+  color: var(--color-primary-green);
+  line-height: 1.3;
+}
+
+.infoEstado {
+  font-family: var(--font-body);
+  font-size: calc(19px * var(--scale-font));
+  color: var(--color-text-dark);
+  line-height: 1.3;
+  padding-left: 28px;
+}
+
+/* ── Herramientas de lectura ── */
+.herramientas {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.btnPrimario {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 60px;
+  border-radius: var(--radius-btn);
+  background-color: var(--color-primary-green);
+  color: var(--color-white);
+  font-family: var(--font-body);
+  font-size: calc(18px * var(--scale-font));
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  padding: 12px 20px;
+  transition: background-color 0.15s ease;
+  width: 100%;
+}
+
+.btnPrimario:hover:not(:disabled) {
+  background-color: var(--color-primary-hover);
+}
+
+.btnPrimario:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btnSecundario {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 60px;
+  border-radius: var(--radius-btn);
+  background-color: var(--color-white);
+  color: var(--color-primary-green);
+  font-family: var(--font-body);
+  font-size: calc(18px * var(--scale-font));
+  font-weight: 600;
+  border: 1.5px solid var(--color-primary-green);
+  cursor: pointer;
+  padding: 12px 20px;
+  transition: background-color 0.15s ease;
+  width: 100%;
+}
+
+.btnSecundario:hover {
+  background-color: var(--color-bubble-green);
+}
+
+/* ── Secciones de contenido ── */
+.seccion {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.seccionH2 {
+  font-family: var(--font-body);
+  font-size: calc(27px * var(--scale-font));
+  font-weight: 700;
+  color: var(--color-text-dark);
+  line-height: 1.25;
+  margin: 0;
+}
+
+.seccionParrafo {
+  font-family: var(--font-body);
+  font-size: calc(22px * var(--scale-font));
+  color: var(--color-text-dark);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ── Pasos numerados ── */
+.pasosList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.paso {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pasoTitulo {
+  font-family: var(--font-body);
+  font-size: calc(27px * var(--scale-font));
+  font-weight: 700;
+  color: var(--color-text-dark);
+  line-height: 1.25;
+  margin: 0;
+}
+
+.pasoDesc {
+  font-family: var(--font-body);
+  font-size: calc(22px * var(--scale-font));
+  color: var(--color-text-dark);
+  line-height: 1.5;
+  margin: 0;
+  padding-left: 4px;
+}
+
+/* ── Bloque dudas ── */
+.dudas {
+  background-color: var(--color-bg-app);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-card);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.dudasTitulo {
+  font-family: var(--font-body);
+  font-size: calc(22px * var(--scale-font));
+  font-weight: 700;
+  color: var(--color-text-dark);
+  margin: 0;
+}
+
+.dudasDesc {
+  font-family: var(--font-body);
+  font-size: calc(18px * var(--scale-font));
+  color: var(--color-text-muted);
+  line-height: 1.45;
+  margin: 0;
+}
+
+.dudasBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 52px;
+  border-radius: var(--radius-btn);
+  background-color: var(--color-primary-green);
+  color: var(--color-white);
+  font-family: var(--font-body);
+  font-size: calc(18px * var(--scale-font));
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  padding: 12px 20px;
+  transition: background-color 0.15s ease;
+  width: 100%;
+  justify-content: center;
+}
+
+.dudasBtn:hover {
+  background-color: var(--color-primary-hover);
+}

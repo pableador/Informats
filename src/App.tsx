@@ -1,16 +1,17 @@
 import { useState } from 'react';
 import styles from './App.module.css';
-import type { Noticia } from './types';
 import { Header } from './components/Header/Header';
 import { SearchBar } from './components/SearchBar/SearchBar';
 import { NewsSection } from './components/NewsSection/NewsSection';
 import { IncibeFooter } from './components/IncibeFooter/IncibeFooter';
-import { ArticleModal } from './components/Modals/ArticleModal';
 import { AccessibilityModal } from './components/Modals/AccessibilityModal';
 import { AccountModal } from './components/Modals/AccountModal';
 import { useNewsFilter } from './hooks/useNewsFilter';
+import { useNavigation } from './context/NavigationContext';
+import { NoticiaPage, RespuestaPage } from './pages';
 
 export function App() {
+  const { pantalla, params, navegar, volver } = useNavigation();
   const {
     searchQuery,
     setSearchQuery,
@@ -25,14 +26,15 @@ export function App() {
     isFiltered,
   } = useNewsFilter();
 
-  const [activeArticle, setActiveArticle] = useState<Noticia | null>(null);
   const [isAccessibilityOpen, setIsAccessibilityOpen] = useState(false);
   const [isAccountOpen, setIsAccountOpen] = useState(false);
 
   const likedCountTotal = Object.values(likedMap).filter(Boolean).length;
 
   const handleVolver = () => {
-    if (isFiltered) {
+    if (pantalla !== 'inicio') {
+      volver();
+    } else if (isFiltered) {
       resetAll();
     } else {
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -46,43 +48,67 @@ export function App() {
       </a>
 
       <div className={styles.mobileFrame}>
-        <div className={styles.stickyTopZone}>
-          <Header
+        {pantalla === 'inicio' && (
+          <>
+            <div className={styles.stickyTopZone}>
+              <Header
+                onOpenAccessibility={() => setIsAccessibilityOpen(true)}
+                onOpenAccount={() => setIsAccountOpen(true)}
+                onVolver={handleVolver}
+                showVolver={true}
+              />
+              <SearchBar
+                searchQuery={searchQuery}
+                onSearchChange={setSearchQuery}
+                onClear={() => setSearchQuery('')}
+                resultCount={filteredNews.length}
+              />
+            </div>
+
+            <NewsSection
+              news={filteredNews}
+              likedMap={likedMap}
+              likeCounts={likeCounts}
+              onToggleLike={toggleLike}
+              onReadNews={(noticia) => navegar('noticia', { noticiaId: noticia.id })}
+              selectedTopics={selectedTopics}
+              onToggleTopic={toggleTopic}
+              onClearTopics={clearTopics}
+              onResetAll={resetAll}
+              searchQuery={searchQuery}
+            />
+
+            <IncibeFooter />
+          </>
+        )}
+
+        {pantalla === 'noticia' && params.noticiaId && (
+          <NoticiaPage
+            noticiaId={params.noticiaId}
+            onVolver={volver}
             onOpenAccessibility={() => setIsAccessibilityOpen(true)}
             onOpenAccount={() => setIsAccountOpen(true)}
-            onVolver={handleVolver}
-            showVolver={true}
+            onToggleLike={toggleLike}
+            likedMap={likedMap}
+            likeCounts={likeCounts}
+            onNavigateToDudas={(id) => navegar('respuesta', { noticiaId: id })}
           />
-          <SearchBar
-            searchQuery={searchQuery}
-            onSearchChange={setSearchQuery}
-            onClear={() => setSearchQuery('')}
-            resultCount={filteredNews.length}
+        )}
+
+        {pantalla === 'respuesta' && params.noticiaId && (
+          <RespuestaPage
+            noticiaId={params.noticiaId}
+            preguntaOriginal={params.pregunta}
+            onVolver={volver}
+            onOpenAccessibility={() => setIsAccessibilityOpen(true)}
+            onOpenAccount={() => setIsAccountOpen(true)}
+            onToggleLike={toggleLike}
+            likedMap={likedMap}
+            likeCounts={likeCounts}
           />
-        </div>
-
-        <NewsSection
-          news={filteredNews}
-          likedMap={likedMap}
-          likeCounts={likeCounts}
-          onToggleLike={toggleLike}
-          onReadNews={(noticia) => setActiveArticle(noticia)}
-          selectedTopics={selectedTopics}
-          onToggleTopic={toggleTopic}
-          onClearTopics={clearTopics}
-          onResetAll={resetAll}
-          searchQuery={searchQuery}
-        />
-
-        <IncibeFooter />
+        )}
 
         {/* Diálogos y modales accesibles */}
-        <ArticleModal
-          noticia={activeArticle}
-          isOpen={Boolean(activeArticle)}
-          onClose={() => setActiveArticle(null)}
-        />
-
         <AccessibilityModal
           isOpen={isAccessibilityOpen}
           onClose={() => setIsAccessibilityOpen(false)}

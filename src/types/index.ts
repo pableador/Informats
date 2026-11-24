@@ -42,3 +42,13 @@ export interface UsuarioDemo {
   email: string;
   noticiasGuardadas: string[];
 }
+
+export interface DudaRespuesta {
+  id: string;
+  noticiaId: string;
+  preguntaOriginal: string;
+  respuestaClara: string;
+  requisitos?: string;
+  enlaceOficial?: string;
+  orden: number;
+}

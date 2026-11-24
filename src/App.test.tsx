@@ -3,11 +3,14 @@ import userEvent from '@testing-library/user-event';
 import { describe, it, expect } from 'vitest';
 import App from './App';
 import { AccessibilityProvider } from './context/AccessibilityContext';
+import { NavigationProvider } from './context/NavigationContext';
 
 function renderApp() {
   return render(
     <AccessibilityProvider>
-      <App />
+      <NavigationProvider>
+        <App />
+      </NavigationProvider>
     </AccessibilityProvider>
   );
 }
@@ -95,23 +98,35 @@ describe('Informats - Pantalla «Inicio · Hoy, con claridad»', () => {
     expect(screen.queryByText('Tu cita médica: cómo pedirla sin desplazarte')).not.toBeInTheDocument();
   });
 
-  it('opens article modal when clicking "leer +"', async () => {
+  it('navigates to NoticiaPage when clicking "leer +" and back to Inicio on Volver', async () => {
     const user = userEvent.setup();
     renderApp();
 
     const leerButtons = screen.getAllByRole('button', { name: /leer noticia completa/i });
     await user.click(leerButtons[0]);
 
-    // Modal abierto con contenido y pasos
-    expect(screen.getByRole('dialog')).toBeInTheDocument();
-    expect(screen.getByText('Resumen claro y directo:')).toBeInTheDocument();
-    expect(screen.getByText('Pasos claros para actuar:')).toBeInTheDocument();
+    // Vista NoticiaPage con secciones completas
+    expect(screen.getByText('Qué está pasando')).toBeInTheDocument();
+    expect(screen.getByText('Qué puedes hacer ahora')).toBeInTheDocument();
+    expect(screen.getByText('¿Te queda alguna duda?')).toBeInTheDocument();
 
-    // Cerrar modal
-    const closeBtn = screen.getByRole('button', { name: /cerrar lectura de la noticia/i });
-    await user.click(closeBtn);
+    // Navegar a RespuestaPage desde dudas
+    const dudasBtn = screen.getByRole('button', {
+      name: /ir a la pantalla para preguntar sobre esta noticia/i,
+    });
+    await user.click(dudasBtn);
+    expect(screen.getByText('¿Tienes más preguntas sobre esta noticia?')).toBeInTheDocument();
 
-    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    // Volver a NoticiaPage y luego a Inicio
+    const volverBtn = screen.getByRole('button', { name: /volver a la vista anterior o arriba/i });
+    await user.click(volverBtn);
+    expect(screen.getByText('Qué está pasando')).toBeInTheDocument();
+
+    const volverInicioBtn = screen.getByRole('button', {
+      name: /volver a la vista anterior o arriba/i,
+    });
+    await user.click(volverInicioBtn);
+    expect(screen.getByText('¿Qué está pasando?')).toBeInTheDocument();
   });
 
   it('opens and closes accessibility settings dialog', async () => {
